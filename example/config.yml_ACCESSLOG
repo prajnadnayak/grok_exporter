@@ -1,0 +1,13 @@
+input:
+    type: file
+    path: /var/lib/tomcat7/logs/localhost_access_log.2017-11-22.txt
+    readall: true
+grok:
+    patterns_dir: ./patterns
+metrics:
+    - type: counter
+      name: grok_tomcat_log_severe
+      help: Example counter metric with labels.
+      match: '%{IPORHOST:clientip} (?:-|%{USER:ident}) (?:-|%{USER:auth}) \[%{HTTPDATE:timestamp}\] \"(?:%{WORD:verb} %{NOTSPACE:request}(?: HTTP/%{NUMBER:httpversion})?|-)\" 404 (?:-|%{NUMBER:bytes})'
+server:
+    port: 9140
